@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Consulta de Nómina | La Divinata</title>
+
+    <link rel="stylesheet" href="style.css">
+
+</head>
+
+
+<body>
+
+    <div class="container">
+
+
+        <!-- =====================================================
+             ENCABEZADO
+        ====================================================== -->
+
+        <header class="header">
+
+            <div class="brand">
+
+                <div class="brand-icon">
+                    LD
+                </div>
+
+                <div>
+
+                    <h1>
+                        Consulta de Nómina
+                    </h1>
+
+                    <p>
+                        Desglose de nómina por colaborador
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                class="status"
+                id="status"
+            >
+                Sin nómina cargada
+            </div>
+
+        </header>
+
+
+
+        <!-- =====================================================
+             CARGAR EXCEL
+        ====================================================== -->
+
+        <section class="card upload-card">
+
+            <div class="section-title">
+
+                <div class="section-icon">
+                    📊
+                </div>
+
+                <div>
+
+                    <h2>
+                        Cargar nómina
+                    </h2>
+
+                    <p>
+                        Selecciona el archivo Excel de nómina
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="upload-area">
+
+                <input
+                    type="file"
+                    id="archivo"
+                    accept=".xlsx,.xls"
+                >
+
+
+                <label
+                    for="archivo"
+                    class="file-button"
+                >
+                    📁 Seleccionar Excel
+                </label>
+
+
+                <span id="nombreArchivo">
+                    Ningún archivo seleccionado
+                </span>
+
+
+                <button
+                    id="btnSubir"
+                    class="primary-button"
+                    disabled
+                >
+                    Subir nómina
+                </button>
+
+            </div>
+
+
+            <div
+                id="mensajeUpload"
+                class="mensaje"
+            ></div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             RESUMEN
+        ====================================================== -->
+
+        <section
+            class="summary"
+            id="summary"
+            style="display:none;"
+        >
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    👥
+                </div>
+
+                <div>
+
+                    <span class="summary-label">
+                        Colaboradores
+                    </span>
+
+                    <strong id="totalEmpleados">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div class="summary-icon">
+                    📄
+                </div>
+
+                <div>
+
+                    <span class="summary-label">
+                        Hoja utilizada
+                    </span>
+
+                    <strong id="nombreHoja">
+                        -
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             BUSCADOR
+        ====================================================== -->
+
+        <section
+            class="card search-card"
+            id="searchSection"
+            style="display:none;"
+        >
+
+            <div class="section-title">
+
+                <div class="section-icon">
+                    🔎
+                </div>
+
+                <div>
+
+                    <h2>
+                        Buscar colaborador
+                    </h2>
+
+                    <p>
+                        Busca por número de empleado o nombre
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <div class="search-input-wrapper">
+
+                    <span>
+                        🔎
+                    </span>
+
+                    <input
+                        type="text"
+                        id="busqueda"
+                        placeholder="Número de empleado o nombre..."
+                        autocomplete="off"
+                    >
+
+                </div>
+
+
+                <button
+                    id="btnLimpiar"
+                    class="secondary-button"
+                >
+                    Limpiar
+                </button>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             RESULTADOS
+        ====================================================== -->
+
+        <section
+            id="resultadosSection"
+            style="display:none;"
+        >
+
+            <div class="results-header">
+
+                <div>
+
+                    <h2>
+                        Colaboradores encontrados
+                    </h2>
+
+                    <span id="contadorResultados">
+                        0 resultados
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="listaResultados"
+                class="results-list"
+            ></div>
+
+        </section>
+
+
+
+        <!-- =====================================================
+             DETALLE DEL EMPLEADO
+        ====================================================== -->
+
+        <section
+            id="detalleSection"
+            class="card detail-card"
+            style="display:none;"
+        >
+
+
+            <div class="employee-header">
+
+
+                <div class="employee-information">
+
+                    <span class="employee-label">
+                        COLABORADOR
+                    </span>
+
+                    <h2 id="detalleNombre">
+                        -
+                    </h2>
+
+                    <p id="detalleNumero">
+                        -
+                    </p>
+
+                </div>
+
+
+                <div class="employee-actions">
+
+
+                    <div class="total-box">
+
+                        <span>
+                            TOTAL A DISPERSAR
+                        </span>
+
+                        <strong id="detalleTotal">
+                            $0.00
+                        </strong>
+
+                    </div>
+
+
+                    <button
+                        id="btnPDF"
+                        class="pdf-button"
+                    >
+                        📄 Descargar PDF
+                    </button>
+
+
+                </div>
+
+
+            </div>
+
+
+
+            <!-- =================================================
+                 DATOS
+            ================================================== -->
+
+            <div
+                id="detalleContenido"
+                class="detail-grid"
+            ></div>
+
+
+
+            <!-- =================================================
+                 COMENTARIOS
+            ================================================== -->
+
+            <div
+                id="comentariosContainer"
+                class="comments"
+                style="display:none;"
+            >
+
+                <h3>
+                    Comentarios
+                </h3>
+
+                <div id="detalleComentarios"></div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =====================================================
+             ESTADO VACÍO
+        ====================================================== -->
+
+        <section
+            id="emptyState"
+            class="empty-state"
+        >
+
+            <div class="empty-icon">
+                📋
+            </div>
+
+            <h2>
+                Comienza cargando la nómina
+            </h2>
+
+            <p>
+                Sube el archivo Excel para consultar
+                rápidamente el desglose de cada colaborador.
+            </p>
+
+        </section>
+
+
+    </div>
+
+
+
+    <!-- =========================================================
+         LIBRERÍA PARA GENERAR PDF
+    ========================================================== -->
+
+    <script
+        src="app.js">
+    </script>
+
+
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================== -->
+
+    <script src="app.js"></script>
+
+
+</body>
+
+</html>
+```
