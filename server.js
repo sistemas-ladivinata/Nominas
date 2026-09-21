@@ -1355,6 +1355,7 @@ app.get(
 
 app.listen(
     PORT,
+    '0.0.0.0',
     () => {
 
         console.log("");
@@ -1366,7 +1367,7 @@ app.listen(
             "Servidor iniciado en:"
         );
         console.log(
-            `http://localhost:${PORT}`
+            `http://0.0.0.0:${PORT}`
         );
         console.log("");
 
